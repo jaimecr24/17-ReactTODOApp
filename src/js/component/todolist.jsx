@@ -14,7 +14,10 @@ const TodoList = () => {
 	const listItems = list.map((value, index) => {
 		return (
 			<div key={index}>
-				<Task index={index} list={list} fSet={setList} />
+				<Task
+					strItem={value}
+					fDelete={() => setList(list.filter((e, i) => i !== index))}
+				/>
 				<hr />
 			</div>
 		);
