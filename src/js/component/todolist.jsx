@@ -1,32 +1,44 @@
 import React, { useState } from "react";
 
+import Task from "./task.jsx";
+
 const TodoList = () => {
+	// we define list as a list of tasks. The initial value is []
 	const [list, setList] = useState([]);
+	// inputValue is the value of tag <input>
 	const [inputValue, setInputValue] = useState("");
 
+	// we map list on listItems to do the html
+	// each item has a Task container to represent the task.
+	// we pass the list and setList function because Task will update the list of tasks.
+	const listItems = list.map((value, index) => {
+		return (
+			<div key={index}>
+				<Task index={index} list={list} fSet={setList} />
+				<hr />
+			</div>
+		);
+	});
+
 	return (
-		<div className="container border border-dark">
+		<div className="container border border-danger bg-warning bg-opacity-25 p-2">
 			<input
+				className="mb-3 w-75"
 				type="text"
+				placeholder="Next task to do..."
 				onChange={e => {
 					setInputValue(e.target.value);
 				}}
 				value={inputValue}
-				onKeyPress={e =>
-					e.key === "Enter" ? setList(list.concat(inputValue)) : null
-				}
+				onKeyPress={e => {
+					if (e.key === "Enter") {
+						setList(list.concat(inputValue));
+						setInputValue("");
+					}
+				}}
 			/>
-			<ul>
-				<li>{list[0]}</li>
-				<hr />
-				<li>{list[1]}</li>
-				<hr />
-				<li>{list[2]}</li>
-				<hr />
-				<li>{list[3]}</li>
-				<hr />
-			</ul>
-			<p>4 items left</p>
+			<div className="px-3">{listItems}</div>
+			<p className="text-start px-3 fw-bold">{list.length} items left</p>
 		</div>
 	);
 };
